@@ -91,6 +91,38 @@ public class LinearAlgebra {
         return new Vector(Multiplicacao(matriz1, matriz2));
     }
 
+    public static Vector3 Dot(Matriz matriz1, Vector3 vector3 ) {
+        System.out.println("DOT");
+        Matriz matriz2 = new Matriz(4, 1);
+        matriz2.SetValue(0, 0, vector3.x);
+        matriz2.SetValue(1, 0, vector3.y);
+        matriz2.SetValue(2, 0, vector3.z);
+        matriz2.SetValue(3, 0, 1);
+
+
+        int linhas1 = matriz1.GetLinhas();
+        int colunas1 = matriz1.GetColunas();
+        int linhas2 = matriz2.GetLinhas();
+        int colunas2 = matriz2.GetColunas();
+    
+        if (colunas1 != linhas2) {
+            throw new IllegalArgumentException("O número de colunas da matriz1 deve ser igual ao número de linhas da matriz2 para multiplicação.");
+        }
+    
+        Matriz dot = new Matriz(linhas1, colunas2);
+    
+        for (int i = 0; i < linhas1; i++) {
+            for (int j = 0; j < colunas2; j++) {
+                double valor = 0.0;
+                for (int k = 0; k < colunas1; k++) {
+                    valor += matriz1.GetValue(i, k) * matriz2.GetValue(k, j);
+                }
+                dot.SetValue(i, j, valor);
+            }
+        }
+        return new Vector3((int)dot.GetValue(0, 0), (int)dot.GetValue(1, 0), (int)dot.GetValue(2, 0));
+    }
+
     public static Matriz Dot(Matriz matriz1, Matriz matriz2) {
         int linhas1 = matriz1.GetLinhas();
         int colunas1 = matriz1.GetColunas();

@@ -11,6 +11,7 @@ public class App {
 
         System.out.println(test.GetTransformationMatriz());
 
-        Drawing.OpenWindow();
+        Drawing drawing = new Drawing();
+        drawing.OpenWindow();
     }
 }

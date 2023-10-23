@@ -1,4 +1,5 @@
 import biblioteca_matrizes.*;
+import javafx.scene.shape.Line;
 
 public class Transform {
     private Matriz positionMatrix = new Matriz(4, 4);
@@ -10,11 +11,17 @@ public class Transform {
     public Vector3 rotation;
     public Vector3 scale;
 
+    public Transform() {
+        position = new Vector3(0, 0, 0);
+        rotation = new Vector3(0, 0, 0);
+        scale = new Vector3(0, 0, 0);
+    }
+
     public Matriz GetTranslationMatrix() {
         int linhas = 4;
         int colunas = 4;
         Matriz translationMatrix = new Matriz(linhas, colunas);
-
+        
         // montando a identidade
         for (int i = 0; i < linhas; i++) {
             translationMatrix.SetValue(i, i, 1);
@@ -88,8 +95,7 @@ public class Transform {
     }
 
     public Matriz GetTransformationMatriz() {
-        return LinearAlgebra.Dot(GetTranslationMatrix(),
-            LinearAlgebra.Dot(Get_Z_RotationMatrix(), 
-            LinearAlgebra.Dot(Get_Y_RotationMatrix(), Get_X_RotationMatrix())));
+
+        return LinearAlgebra.Dot(GetTranslationMatrix(), LinearAlgebra.Dot(Get_Z_RotationMatrix(), LinearAlgebra.Dot(Get_Y_RotationMatrix(), Get_X_RotationMatrix())));
     }
 }

@@ -1,12 +1,16 @@
 package biblioteca_matrizes;
 public class Vector3 {
-    public int x = 0;
-    public int y = 0;
-    public int z = 0;
+    public float x = 0;
+    public float y = 0;
+    public float z = 0;
 
-    public Vector3(int x, int y, int z){
+    public Vector3(float x, float y, float z){
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public String toString() {
+        return String.format("X: %d, Y: %d, Z: %d", x, y, z);
     }
 }
