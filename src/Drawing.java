@@ -7,23 +7,23 @@ public class Drawing extends Canvas {
      static double time_passed = 0;
      static double delta_time = 0;
 
-    public Object object = new Object();
+    public Object[] objects;
 
-    private Canvas canvas = null;
+    public Drawing(Object[] objects) {
+        this.objects = objects;
+    }
 
     public void OpenWindow() {
-        JFrame frame = new JFrame("My Drawing");
-        canvas = new Drawing();
-        canvas.setSize(400, 400);
-        frame.add(canvas);
+        JFrame frame = new JFrame("AV2 MAT");
+        this.setSize(600, 500);
+        frame.add(this);
         frame.pack();
         frame.setDefaultCloseOperation(3);
         frame.setVisible(true);
         float deltaTime = 0.0f;
         while (true) {
             long start = System.currentTimeMillis();
-            tick(deltaTime);
-            canvas.repaint();
+            this.repaint();
             frame.repaint();
             long end = System.currentTimeMillis() - start; // Delta time in ms
             float seconds = end / 1000.0f; // Delta time in s converted to float
@@ -34,13 +34,8 @@ public class Drawing extends Canvas {
     public void paint(Graphics g) {
         super.paint(g);
         g.setColor(Color.BLACK);
-        object.Draw(g);
-    }
-    
-    public void tick(float deltaTime) {
-        object.Move();
-        object.transform.position.x += 1;
-        // canvas.repaint();
-        // System.out.println("tixk");
+        for (Object object : objects) {
+            object.Draw(g);
+        }
     }
 }

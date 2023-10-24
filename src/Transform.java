@@ -10,6 +10,8 @@ public class Transform {
     public Vector3 position;
     public Vector3 rotation;
     public Vector3 scale;
+    public Vector3 shear;
+
 
     public Transform() {
         position = new Vector3(0, 0, 0);
@@ -96,15 +98,94 @@ public class Transform {
 
     public Matriz GetTransformationMatriz() {
 
-        return LinearAlgebra.Dot(GetTranslationMatrix(), LinearAlgebra.Dot(Get_Z_RotationMatrix(), LinearAlgebra.Dot(Get_Y_RotationMatrix(), Get_X_RotationMatrix())));
+        return LinearAlgebra.Dot(
+            GetTranslationMatrix(), 
+            LinearAlgebra.Dot(Get_Z_ShearMatrix(shear.z),
+            LinearAlgebra.Dot(Get_Y_ShearMatrix(shear.y),
+            LinearAlgebra.Dot(Get_X_ShearMatrix(shear.x), 
+            LinearAlgebra.Dot(Get_Z_RotationMatrix(), 
+            LinearAlgebra.Dot(Get_Y_RotationMatrix(), 
+            LinearAlgebra.Dot(Get_X_RotationMatrix(), 
+            GetScaleMatrix()
+        )))))));
     }
 
     public Matriz GetReflectionMatrix(Vector3 eixo) {
         Matriz I = new Matriz(3, 3);
         I.FillIdentidade();
 
-
-        Matriz R = LinearAlgebra.Subtracao(I, LinearAlgebra.Dot(LinearAlgebra.Times(eixo.GetMatrix(), 2), LinearAlgebra.Tranposta(eixo.GetMatrix())));
+        Matriz R = LinearAlgebra.Subtracao(I, LinearAlgebra.Times(LinearAlgebra.Dot(eixo.GetMatrix(), LinearAlgebra.Tranposta(eixo.GetMatrix())), 2));
         return R;
+    }
+
+    public Matriz Get_X_ProjectionMatrix() {
+        Matriz projectionMatrix = new Matriz(4, 4);
+        projectionMatrix.FillZero();
+
+        // Preencha os elementos da matriz de projeção
+        projectionMatrix.SetValue(0, 0, 1);
+        projectionMatrix.SetValue(3, 3, 1);
+
+        return projectionMatrix;
+    }
+
+    public Matriz Get_Y_ProjectionMatrix() {
+        Matriz projectionMatrix = new Matriz(4, 4);
+        projectionMatrix.FillZero();
+
+        // Preencha os elementos da matriz de projeção
+        projectionMatrix.SetValue(1, 1, 1);
+        projectionMatrix.SetValue(3, 3, 1);
+
+        return projectionMatrix;
+    }
+
+    public Matriz Get_Z_ProjectionMatrix() {
+        Matriz projectionMatrix = new Matriz(4, 4);
+        projectionMatrix.FillZero();
+
+        projectionMatrix.SetValue(2, 2, 1);
+        projectionMatrix.SetValue(3, 3, 1);
+
+        return projectionMatrix;
+    }
+
+    public Matriz Get_X_ShearMatrix(float k) {
+        Matriz shear = new Matriz(4, 4);
+        shear.FillIdentidade();
+
+        shear.SetValue(0, 1, k);
+
+        return shear;
+    }
+
+    public Matriz Get_Y_ShearMatrix(float k) {
+        Matriz shear = new Matriz(4, 4);
+        shear.FillIdentidade();
+
+        shear.SetValue(1, 0, k);
+
+        return shear;
+    }
+
+    public Matriz Get_Z_ShearMatrix(float k) {
+        Matriz projectionMatrix = new Matriz(4, 4);
+        projectionMatrix.FillIdentidade();
+
+        projectionMatrix.SetValue(2, 1, 1);
+
+        return projectionMatrix;
+    }
+
+    public Matriz GetScaleMatrix() {
+        Matriz scaleMatrix = new Matriz(4, 4);
+        scaleMatrix.FillZero();
+
+        scaleMatrix.SetValue(0, 0, scale.x);
+        scaleMatrix.SetValue(1, 1, scale.y);
+        scaleMatrix.SetValue(2, 2, scale.z);
+        scaleMatrix.SetValue(3, 3, 1); // O valor 1 na posição (3,3) é para fins de homogeneização.
+
+        return scaleMatrix;
     }
 }

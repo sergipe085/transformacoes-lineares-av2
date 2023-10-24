@@ -136,7 +136,7 @@ public class LinearAlgebra {
                 dot.SetValue(i, j, valor);
             }
         }
-        return new Vector3((int)dot.GetValue(0, 0), (int)dot.GetValue(1, 0), (int)dot.GetValue(2, 0));
+        return new Vector3((float)dot.GetValue(0, 0), (float)dot.GetValue(1, 0), (float)dot.GetValue(2, 0));
     }
 
     public static Vector3 Dot(Matriz matriz1, Vector3 vector3 ) {
