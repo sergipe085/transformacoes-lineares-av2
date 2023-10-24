@@ -98,4 +98,13 @@ public class Transform {
 
         return LinearAlgebra.Dot(GetTranslationMatrix(), LinearAlgebra.Dot(Get_Z_RotationMatrix(), LinearAlgebra.Dot(Get_Y_RotationMatrix(), Get_X_RotationMatrix())));
     }
+
+    public Matriz GetReflectionMatrix(Vector3 eixo) {
+        Matriz I = new Matriz(3, 3);
+        I.FillIdentidade();
+
+
+        Matriz R = LinearAlgebra.Subtracao(I, LinearAlgebra.Dot(LinearAlgebra.Times(eixo.GetMatrix(), 2), LinearAlgebra.Tranposta(eixo.GetMatrix())));
+        return R;
+    }
 }
